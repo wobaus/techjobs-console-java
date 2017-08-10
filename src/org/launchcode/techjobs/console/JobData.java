@@ -20,6 +20,8 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+    private static ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+    private static ArrayList<HashMap<String, String>> searchJobs =  new ArrayList<>();
 
     /**
      * Fetch list of all values from loaded data,
@@ -54,6 +56,8 @@ public class JobData {
         return allJobs;
     }
 
+
+
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
@@ -70,19 +74,51 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+         //ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+         for (HashMap<String, String> row : allJobs) {
+
+             String aValue = row.get(column);
+
+
+             //value = "java"  aValue=whole list of choosen column  row = HashMap in ArrayList
+             if (aValue.contains(value)) {
+                jobs.add(row);
+                System.out.println(jobs);   //add print fn to see if jobs added any data. currently nothing printed.
+            }
+            //System.out.println(jobs); //even with value in, jobs doesnt contain any data.
+        }
+          if (jobs.isEmpty()){
+             System.out.println("No Result");
+          }
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        //ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
-                jobs.add(row);
+            for (String eachRow : row.values()) {
+                System.out.println(eachRow);
+                // add eachRow to jobs if eachRow has value in it and row is not already in the jobs
+                if (eachRow.contains(value) && !searchJobs.contains(row)) {
+                    searchJobs.add(row);
+                }
             }
         }
 
-        return jobs;
+        return searchJobs;
     }
+
+
+
+
 
     /**
      * Read in data from a CSV file and store it in a list
