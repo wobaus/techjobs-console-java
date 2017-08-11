@@ -20,8 +20,8 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
-    private static ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-    private static ArrayList<HashMap<String, String>> searchJobs =  new ArrayList<>();
+
+
 
     /**
      * Fetch list of all values from loaded data,
@@ -74,21 +74,19 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-         //ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
          for (HashMap<String, String> row : allJobs) {
 
              String aValue = row.get(column);
+             if (aValue.toUpperCase().contains(value.toUpperCase())) {
 
-
-             //value = "java"  aValue=whole list of choosen column  row = HashMap in ArrayList
-             if (aValue.contains(value)) {
                 jobs.add(row);
-                System.out.println(jobs);   //add print fn to see if jobs added any data. currently nothing printed.
             }
-            //System.out.println(jobs); //even with value in, jobs doesnt contain any data.
+
         }
-          if (jobs.isEmpty()){
+            //print "No Result" if List is empty.
+            if (jobs.isEmpty()){
              System.out.println("No Result");
           }
         return jobs;
@@ -99,20 +97,27 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        //ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        ArrayList<HashMap<String, String>> searchJobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
 
             for (String eachRow : row.values()) {
-                System.out.println(eachRow);
-                // add eachRow to jobs if eachRow has value in it and row is not already in the jobs
-                if (eachRow.contains(value) && !searchJobs.contains(row)) {
+
+                // add eachRow to jobs if eachRow has value in it and row is not already in the jobs.
+                // toUppercare. to compare but add original argument to ArrayList jobs.
+
+
+                if (eachRow.toUpperCase().contains(value.toUpperCase()) && !searchJobs.contains(row)) {
                     searchJobs.add(row);
                 }
             }
         }
 
+         if (searchJobs.isEmpty()) {
+             System.out.println("No Result");
+         }
+         
         return searchJobs;
     }
 
